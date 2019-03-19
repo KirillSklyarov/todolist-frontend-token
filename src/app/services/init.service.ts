@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {ApiResponse} from '../entities/apiResponse';
 import {plainToClassFromExist} from 'class-transformer';
 import {environment} from '../../environments/environment';
+import {User} from '../entities/user';
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +20,10 @@ export class InitService {
     this.stateEvent.emit(State.processing);
     this.httpClient
       .post<ApiResponse<null>>(InitService.createUserUri, null)
-      .subscribe((apiResponse: ApiResponse<null>) => {
-        const response = plainToClassFromExist(new ApiResponse<null>(null), apiResponse);
-        console.log(response);
+      .subscribe((apiResponse: ApiResponse<User>) => {
+        const response = plainToClassFromExist(new ApiResponse<User>(User), apiResponse);
+        const user = response.data;
+        console.log(user);
         if (response.success) {
           this.stateEvent.emit(State.true);
         } else {
