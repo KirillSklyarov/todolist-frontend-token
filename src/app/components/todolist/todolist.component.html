@@ -1,0 +1,105 @@
+<div class="d-flex justify-content-between tab-content" (click)="resetActive()">
+  <div class="w-25 d-flex justify-content-center">
+    <div>
+      <ngb-datepicker #dp [(ngModel)]="ngbDate"
+                      (select)="selectDate($event)"
+                      appStopPropagation>
+      </ngb-datepicker>
+      <button (click)="today()" class="btn btn-primary btn-lg btn-block today"
+              appStopPropagation>Today
+      </button>
+    </div>
+  </div>
+  <div class="w-75 todolist d-flex justify-content-between">
+    <div class="w-10">
+      <button class="btn btn-light step" (click)="stepDate(-1)" appStopPropagation>&lt;</button>
+    </div>
+    <div class="w-80 d-flex justify-content-between" *ngIf="state === TodolistState.success">
+      <div class="w-50 d-flex align-items-between flex-column">
+        <div class="todolist-content">
+          <div *ngIf="items.length === 0" class="alert alert-info" role="alert">
+            No items
+          </div>
+          <ul *ngIf="items" class="list-group" appStopPropagation>
+            <li *ngFor="let item of items" (click)="selectItem(item)"
+                class="list-group-item list-group-item-action pointer"
+                [ngClass]="{'active': active === item}">
+              {{item.title}}
+              <button type="button" class="close" aria-label="Close"
+                      (click)="openDelete(item)" appStopPropagation>
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+        <div #nav class="todolist-nav">
+          <div #open class="add d-flex justify-content-center">
+            <button (click)="openCreate()" class="btn btn-primary btn-lg btn-block"
+                    appStopPropagation>
+              Create
+            </button>
+          </div>
+          <div class="d-flex justify-content-center">
+            <ngb-pagination *ngIf="items" [collectionSize]="getLastPage() * 10"
+                            (pageChange)="toPage($event)"
+                            [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false"
+                            [boundaryLinks]="true"
+                            appStopPropagation>
+            </ngb-pagination>
+          </div>
+        </div>
+      </div>
+      <div class="w-50 description">
+        <div *ngIf="!active" class="alert alert-info" role="alert">
+          No active item
+        </div>
+        <div *ngIf="active && !active.description"
+             class="alert alert-info" role="alert">
+          No description
+        </div>
+        <div *ngIf="active && active.description" class="card">
+          <div class="card-body">
+            {{active.description}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-80 d-flex justify-content-around flex-column state" *ngIf="state !== TodolistState.success">
+      <div class="d-flex justify-content-center">
+        <div class="w-50 card">
+          <div class="card-body" *ngIf="state === TodolistState.processing">
+            <div class="alert alert-primary" role="alert">
+              Loading
+            </div>
+            <div class="d-flex justify-content-center action">
+              <div class="spinner-border" role="status" aria-hidden="true"></div>
+            </div>
+          </div>
+
+          <div class="card-body" *ngIf="state === TodolistState.serverError">
+            <div class="alert alert-danger" role="alert">
+              Server error
+            </div>
+            <div class="d-flex justify-content-center action">
+              <button class="btn btn-primary" (click)="loadItems()">Try again</button>
+            </div>
+          </div>
+
+          <div class="card-body" *ngIf="state === TodolistState.authError">
+            <div class="alert alert-danger" role="alert">
+              Token error. Please reinit app or log in
+            </div>
+            <div class="d-flex justify-content-center action">
+              <button class="btn btn-primary" (click)="reinit()">Reinit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-10">
+      <button class="btn btn-light step" (click)="stepDate(1)" appStopPropagation>
+        &gt;
+      </button>
+    </div>
+  </div>
+</div>

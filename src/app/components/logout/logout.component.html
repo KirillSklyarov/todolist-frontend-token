@@ -1,0 +1,18 @@
+<div class="modal-container" *ngIf="token">
+  <div class="modal-block">
+    <ngb-alert [type]="mainAlert.type" [dismissible]="false">
+      {{ mainAlert.message }}
+    </ngb-alert>
+  </div>
+
+  <div class="modal-block d-flex justify-content-center">
+    <div>
+      <button class="btn confirm btn-success" (click)="yes()"
+              [disabled]="processing">
+        <span *ngIf="!processing">Yes</span>
+        <span *ngIf="processing" class="spinner"></span>
+      </button>
+      <button class="btn confirm btn-danger" (click)="no()">No</button>
+    </div>
+  </div>
+</div>

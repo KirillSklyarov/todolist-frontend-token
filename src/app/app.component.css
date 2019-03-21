@@ -1,0 +1,37 @@
+.init {
+  height: 80vh;
+}
+
+ul.nav.nav-tabs {
+  height: 3rem;
+}
+
+ul.nav.nav-tabs > li.nav-item {
+  height: 3rem;
+  width: 6rem;
+}
+
+ul.nav.nav-tabs > li.nav-item a.nav-link {
+  padding: 0.7rem;
+}
+
+ul.nav.nav-tabs > li.nav-item.panel {
+  padding-left: 2rem;
+  padding-right: 2rem;
+  width: calc(100vw - 12rem);
+}
+
+.panel .btn {
+  width: 7rem;
+}
+
+.panel .auth div:first-child .btn {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.panel .auth div:last-child .btn {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+

@@ -1,0 +1,57 @@
+.todolist-content {
+  height: calc(100vh - 3rem - 7rem - 1.4rem - 0.7rem - 1px);
+  margin-top: 0.7rem;
+  margin-right: 0.7rem;
+  margin-bottom: 0.7rem;
+  margin-left: 0.7rem;
+  overflow-y: auto;
+}
+
+.tab-content .todolist .state {
+  height: 75vh;
+}
+
+.todolist-nav {
+  height: calc(7rem - 2 * 0.7rem + 0.7rem);
+  margin-top: 0.7rem;
+  margin-right: 0.7rem;
+  margin-bottom: 0.7rem;
+  margin-left: 0.7rem;
+}
+
+.today {
+  margin-top: 0.7rem;
+}
+
+.todolist-nav .add {
+  margin-bottom: 0.7rem;
+}
+
+.description {
+  margin-top: 0.7rem;
+  margin-right: 0.7rem;
+  margin-bottom: 0.7rem;
+  margin-left: 0.7rem;
+  height: calc(100vh - 3rem - 2 * 0.7rem - 1px);
+}
+
+
+button.step {
+  color: lightgrey;
+  font-size: x-large;
+  height: calc(100vh - 3rem - 2 * 0.7rem - 1px);
+  width: calc(100% - 0.5rem);
+  margin: 0.7rem 0.5rem;
+}
+
+div.todolist > div:first-child > button.step {
+  margin-left: 0;
+}
+
+div.todolist > div:last-child > button.step {
+  margin-right: 0;
+}
+
+ngb-datepicker {
+  margin-top: 0.7rem;
+}

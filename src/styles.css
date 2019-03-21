@@ -1,1 +1,94 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+
+/*body {*/
+/*overflow: hidden;*/
+/*}*/
+
+.modal-container {
+  margin: 1rem 2rem;
+}
+
+.modal-block {
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.w-10 {
+  width: 10%;
+}
+
+.w-80 {
+  width: 80%;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
+}
+
+div.tab-content {
+  height: calc(100vh - 3rem - 1px) !important;
+}
+
+ul.paginator {
+  margin: 0;
+}
+
+.btn.submit {
+  width: 8rem;
+  height: 2.5rem;
+}
+
+.btn.confirm {
+  width: 4rem;
+  height: 2.5rem;
+}
+
+.btn.confirm:first-child {
+  margin-right: 0.5rem;
+}
+
+.btn.confirm:last-child {
+  margin-left: 0.5rem;
+}
+
+span.spinner {
+  background: url('assets/images/oval.svg');
+  background-size: contain;
+  width: calc(2.5rem - 2*6px);
+  height: calc(2.5rem - 2*6px);
+  display: inline-block;
+}
+
+.eye-toggle {
+  height: calc(1.5em + 0.75rem + 2px);
+}
+
+.eye-toggle > .eye {
+  background-repeat: no-repeat !important;
+  background-attachment: fixed;
+  background-position: center;
+  width: calc(2.4rem - 2*6px);
+  height: 1.75rem;
+  display: inline-block;
+}
+
+.eye-toggle > .eye.show {
+  background: url('assets/images/eye-show.svg');
+}
+
+.eye-toggle > .eye.hide {
+  background: url('assets/images/eye-hide.svg');
+}
+
+.init .action, .state .action {
+  height: 2.5rem;
+}
+
+.input-top {
+  margin-bottom: -1px;
+}

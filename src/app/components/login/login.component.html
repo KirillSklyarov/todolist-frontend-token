@@ -1,0 +1,50 @@
+<div class="modal-container">
+
+  <div class="modal-block">
+    <label for="login-username" class="input-top">
+      <span class="input-group-text">Login</span>
+    </label>
+    <div class="input-group">
+      <input #inputLogin id="login-username" type="text" class="form-control"
+             [(ngModel)]="username"
+             (keydown.enter)="login()"/>
+    </div>
+  </div>
+
+  <div class="modal-block">
+    <label for="login-password" class="input-top">
+      <span class="input-group-text">Password</span>
+    </label>
+    <div class="input-group">
+      <input id="login-password" type="{{isShow ? 'text' : 'password'}}"
+             class="form-control" [(ngModel)]="password"
+             aria-label="Password"
+             aria-describedby="basic-addon2"
+             (keydown.enter)="login()"/>
+      <div class="input-group-append">
+        <button class="btn input-group-text eye-toggle" (click)="toggleShow()">
+          <span class="eye" [ngClass]="{'show': isShow, 'hide': !isShow}"></span>
+        </button>
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="modal-block">
+    <button type="button" class="btn btn-secondary submit"
+            (click)="login()"
+            [disabled]="processing">
+      <span *ngIf="!processing">Log&nbsp;in</span>
+      <span *ngIf="processing" class="spinner"></span>
+    </button>
+  </div>
+
+  <div class="modal-block">
+    <p *ngFor="let alert of alerts">
+      <ngb-alert [type]="alert.type" [dismissible]="false">{{ alert.message }}</ngb-alert>
+    </p>
+  </div>
+
+</div>
+

@@ -1,20 +1,80 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<div [ngClass]="{'hidden': state !== State.true}" #tabsetWrapper>
+  <ngb-tabset [destroyOnHide]="false">
+    <ngb-tab>
+      <ng-template ngbTabTitle>
+        Todolist
+      </ng-template>
+      <ng-template ngbTabContent>
+        <app-todolist *ngIf="state === State.true"></app-todolist>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab>
+      <ng-template ngbTabTitle>
+        Profile
+      </ng-template>
+      <ng-template ngbTabContent>
+        <app-profile *ngIf="state === State.true"></app-profile>
+      </ng-template>
+    </ngb-tab>
+    <div>
+      <button>Register</button>
+    </div>
+  </ngb-tabset>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
 
+<div *ngIf="state !== State.true"
+     class="d-flex justify-content-around flex-column init">
+  <div class="d-flex justify-content-center">
+    <div class="w-50 card">
+      <div class="card-body" *ngIf="(state === State.false)">
+        <div class="alert alert-primary" role="alert">
+          App is not inited
+        </div>
+        <div class="d-flex justify-content-center action">
+          <div class="spinner-border" role="status" aria-hidden="true"></div>
+        </div>
+      </div>
+      <div class="card-body" *ngIf="(state === State.processing)">
+        <div class="alert alert-primary" role="alert">
+          App initialization
+        </div>
+        <div class="d-flex justify-content-center action">
+          <div class="spinner-border" role="status" aria-hidden="true"></div>
+        </div>
+      </div>
+      <div class="card-body" *ngIf="state === State.error">
+        <div class="alert alert-danger" role="alert">
+          Initialization error
+        </div>
+        <div class="d-flex justify-content-center action">
+          <button class="btn btn-primary" (click)="reinit()">Try again</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<li class="d-flex justify-content-around flex-column nav-item panel hidden" #panel>
+  <div class="d-inline-flex justify-content-between w-100" *ngIf="user">
+    <div class="d-inline-flex">
+      <div *ngIf="user?.isPermanent">
+      <span>
+        {{user.username}}
+      </span>
+      </div>
+      <div class="d-inline-flex auth" *ngIf="!user.isPermanent">
+        <div>
+          <button class="btn btn-primary" (click)="openRegister()">Register</button>
+        </div>
+        <div>
+          <button class="btn btn-secondary" (click)="openLogin()">Log&nbsp;in</button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="user">
+      <button class="btn btn-danger" (click)="openLogout()">
+        {{user.isPermanent ? 'Log&nbsp;out' : 'Purge'}}
+      </button>
+    </div>
+  </div>
+</li>

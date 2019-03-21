@@ -1,0 +1,50 @@
+<div class="modal-container">
+  <div *ngIf="!requiredInit">
+    <div class="modal-block">
+      <label for="register-username" class="input-top">
+        <span class="input-group-text">Login</span>
+      </label>
+      <div class="input-group">
+        <input id="register-username" type="text" class="form-control" [(ngModel)]="username"
+               (keydown.enter)="register()"/>
+      </div>
+    </div>
+
+    <div class="modal-block">
+      <label for="register-password" class="input-top">
+        <span class="input-group-text">Password</span>
+      </label>
+      <div class="input-group">
+        <input id="register-password" type="{{isShow ? 'text' : 'password'}}"
+               class="form-control" [(ngModel)]="password"
+               (keydown.enter)="register()"/>
+        <div class="input-group-append">
+          <button class="btn input-group-text eye-toggle" (click)="toggleShow()">
+            <span class="eye" [ngClass]="{'show': isShow, 'hide': !isShow}"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-block">
+      <button type="button" class="btn btn-secondary submit"
+              (click)="register()"
+              [disabled]="processing">
+        <span *ngIf="!processing">Register</span>
+        <span *ngIf="processing" class="spinner"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="modal-block">
+    <p *ngFor="let alert of alerts">
+      <ngb-alert [type]="alert.type" [dismissible]="false">{{ alert.message }}</ngb-alert>
+    </p>
+  </div>
+
+  <div class="modal-block" *ngIf="requiredInit">
+    <div class="d-flex justify-content-center">
+      <button class="btn btn-primary submit" (click)="reinit()">Reinit</button>
+    </div>
+  </div>
+</div>
