@@ -14,12 +14,10 @@ import {environment} from '../../environments/environment';
   providedIn: 'root'
 })
 export class ItemService {
-  private static readonly itemUri = environment.apiServer + 'api/v1/item';
-
+  private static readonly createItemUrl = `${environment.apiServer}api/v1/item`;
   private static readonly readItemsUri = `${environment.apiServer}api/v1/items`;
-  private static readonly readItemsCountUrl = `${ItemService.itemUri}/count`;
-  private static readonly createItemUrl = `${ItemService.itemUri}/create`;
-  private static readonly deleteItemUrl = `${ItemService.itemUri}/delete`;
+  private static readonly deleteItemUrl = `${environment.apiServer}api/v1/item`;
+  // private static readonly readItemsCountUrl = `${environment.apiServer}api/v1/count`;
 
   private createEvent: EventEmitter<Item> = new EventEmitter();
   private deleteEvent: EventEmitter<Item> = new EventEmitter();
@@ -40,10 +38,10 @@ export class ItemService {
       `${ItemService.readItemsUri}/${date.toISODate()}/${page}/${count}`, {withCredentials: true});
   }
 
-  public getCount(date: DateTime): Observable<ApiResponse<number>> {
-    return this.httpClient.get<ApiResponse<number>>(
-      `${ItemService.readItemsCountUrl}/${date.toISODate()}`, {withCredentials: true});
-  }
+  // public getCount(date: DateTime): Observable<ApiResponse<number>> {
+  //   return this.httpClient.get<ApiResponse<number>>(
+  //     `${ItemService.readItemsCountUrl}/${date.toISODate()}`, {withCredentials: true});
+  // }
 
   public create(item: Item): Observable<ApiResponse<CreateData>> {
     return this.httpClient.post<ApiResponse<CreateData>>(
@@ -57,8 +55,8 @@ export class ItemService {
   }
 
   public delete(item: Item): Observable<ApiResponse<null>> {
-    return this.httpClient.post<ApiResponse<null>>(
-      `${ItemService.deleteItemUrl}/${item.uuid}`, null, {withCredentials: true})
+    return this.httpClient.delete<ApiResponse<null>>(
+      `${ItemService.deleteItemUrl}/${item.uuid}`, {withCredentials: true})
       .pipe(
         tap((created: ApiResponse<null>) => {
           this.deleteEvent.emit(item);

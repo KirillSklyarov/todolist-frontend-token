@@ -12,12 +12,10 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  private static readonly apiPath = environment.apiServer + 'api/v1/user';
-
-  private static readonly createUserUri = UserService.apiPath + '/init';
-  private static readonly registerUri = UserService.apiPath + '/register';
-  private static readonly loginUri = UserService.apiPath + '/login';
-  private static readonly logoutUri = UserService.apiPath + '/logout';
+  private static readonly createUserUri = environment.apiServer + 'api/v1/user/init';
+  private static readonly registerUri = environment.apiServer + 'api/v1/user/register';
+  private static readonly loginUri = environment.apiServer + 'api/v1/user/login';
+  private static readonly logoutUri = environment.apiServer + 'api/v1/user/logout';
 
 
   private readonly stateEvent: EventEmitter<State> = new EventEmitter<State>();
