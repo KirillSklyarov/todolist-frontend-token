@@ -29,7 +29,7 @@ export class UserService {
   public init(): void {
     this.stateEvent.emit(State.processing);
     this.httpClient
-      .post<ApiResponse<null>>(UserService.createUserUri, null)
+      .post<ApiResponse<null>>(UserService.createUserUri, null, {withCredentials: true})
       .subscribe((apiResponse: ApiResponse<User>) => {
         const response = plainToClassFromExist(new ApiResponse<User>(User), apiResponse);
         if (response.success) {
@@ -66,9 +66,10 @@ export class UserService {
 
     return this.httpClient.post<ApiResponse<User>>(
       UserService.registerUri,
-      userData).pipe(
+      userData, {withCredentials: true}).pipe(
       tap((apiResponse: ApiResponse<User>) => {
         const response = plainToClassFromExist(new ApiResponse<User>(User), apiResponse);
+        console.log(response);
         if (response.success) {
           console.log(response);
         } else {
@@ -85,7 +86,7 @@ export class UserService {
 
     return this.httpClient.post<ApiResponse<User>>(
       UserService.loginUri,
-      userData).pipe(
+      userData, {withCredentials: true}).pipe(
       tap((apiResponse: ApiResponse<User>) => {
         const response = plainToClassFromExist(new ApiResponse<User>(User), apiResponse);
         if (response.success) {
