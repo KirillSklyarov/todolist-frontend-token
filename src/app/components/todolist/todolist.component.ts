@@ -12,6 +12,8 @@ import {UserService} from '../../services/user.service';
 import {plainToClassFromExist} from 'class-transformer';
 import {DateTime} from 'luxon';
 import {ApiResponse} from '../../entities/apiResponse';
+import {EventService} from '../../services/event.service';
+import {User} from '../../entities/user';
 
 @Component({
   selector: 'app-todolist',
@@ -35,7 +37,8 @@ export class TodolistComponent implements OnInit, OnDestroy {
 
   constructor(private itemService: ItemService,
               private modalService: NgbModal,
-              private userService: UserService) {
+              private userService: UserService,
+              private eventService: EventService) {
     this.TodolistState = TodolistState;
 
   }
@@ -49,16 +52,22 @@ export class TodolistComponent implements OnInit, OnDestroy {
     };
 
     this.countPerPage = environment.defaultCountPerPage;
-    const userSubscription = this.userService.getUserEvent()
-      .subscribe(() => {
+    const createSubscription = this.eventService
+      .subscribeCreate((item: Item) => {
+        this.loadItems();
+      });
+
+    const userSubscription = this.eventService
+      .subscribeUser((user: User | null) => {
         this.loadItems();
       });
 
     // TODO: refactor delete
-    const deleteSubscription = this.itemService.getDeleteEvent()
-      .subscribe(() => {
+    const deleteSubscription = this.eventService
+      .subscribeDelete((item: Item) => {
         this.loadItems();
       });
+    this.subscriptions.add(createSubscription);
     this.subscriptions.add(userSubscription);
     this.subscriptions.add(deleteSubscription);
     this.loadItems();

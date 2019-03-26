@@ -9,11 +9,13 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {RegisterComponent} from './components/register/register.component';
 import {LoginComponent} from './components/login/login.component';
 import {LogoutComponent} from './components/logout/logout.component';
+import {EventService} from './services/event.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly subscriptions: Subscription = new Subscription();
@@ -24,17 +26,18 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('tabsetWrapper') public tabsetWrapper: ElementRef;
 
   constructor(private userService: UserService,
+              private eventService: EventService,
               private modalService: NgbModal) {
     this.State = State;
   }
 
   public ngOnInit(): void {
-    const initSubscription = this.userService.getStateEvent()
-      .subscribe((state: State) => {
+    const initSubscription = this.eventService
+      .subscribeState((state: State) => {
         this.state = state;
       });
-    const userSubscription = this.userService.getUserEvent()
-      .subscribe((user: User|null) => {
+    const userSubscription = this.eventService
+      .subscribeUser((user: User|null) => {
         this.user = user;
       });
 

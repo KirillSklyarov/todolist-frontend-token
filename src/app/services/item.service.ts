@@ -9,6 +9,7 @@ import {CreateData} from '../entities/createData';
 import {tap} from 'rxjs/operators';
 import {DateTime} from 'luxon';
 import {environment} from '../../environments/environment';
+import {EventService} from './event.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,18 +20,7 @@ export class ItemService {
   private static readonly deleteItemUrl = `${environment.apiServer}api/v1/item`;
   // private static readonly readItemsCountUrl = `${environment.apiServer}api/v1/count`;
 
-  private createEvent: EventEmitter<Item> = new EventEmitter();
-  private deleteEvent: EventEmitter<Item> = new EventEmitter();
-
-  constructor(private httpClient: HttpClient) {
-  }
-
-  public getCreateEvent(): EventEmitter<Item> {
-    return this.createEvent;
-  }
-
-  public getDeleteEvent(): EventEmitter<Item> {
-    return this.deleteEvent;
+  constructor(private httpClient: HttpClient, private eventService: EventService) {
   }
 
   public getList(date: DateTime, page: number = 1, count: number = 10): Observable<ApiResponse<ItemsData>> {
@@ -49,7 +39,7 @@ export class ItemService {
       .pipe(
         // TODO reset item
         tap((created: ApiResponse<CreateData>) => {
-          this.createEvent.emit(item);
+          this.eventService.emitCreate(item);
         })
       );
   }
@@ -59,7 +49,7 @@ export class ItemService {
       `${ItemService.deleteItemUrl}/${item.uuid}`, {withCredentials: true})
       .pipe(
         tap((created: ApiResponse<null>) => {
-          this.deleteEvent.emit(item);
+          this.eventService.emitDelete(item);
         })
       );
   }

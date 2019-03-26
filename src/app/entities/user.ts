@@ -3,7 +3,7 @@ import {Token} from './token';
 
 export class User {
   username: string;
-  isPermanent: boolean;
+  permanent: boolean;
 
   @Type(() => Token)
   currentToken: Token;
