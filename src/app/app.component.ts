@@ -61,7 +61,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public openLogout(): void {
-    this.modalService.open(LogoutComponent);
+    const logoutWindow = this.modalService.open(LogoutComponent);
+    logoutWindow.componentInstance.user = this.user;
   }
 
   public reinit(): void {

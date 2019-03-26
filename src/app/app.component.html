@@ -49,7 +49,7 @@
 <li class="d-flex justify-content-around flex-column nav-item panel hidden" #panel>
   <div class="d-inline-flex justify-content-between w-100" *ngIf="user">
     <div class="d-inline-flex">
-      <div *ngIf="user?.permanent">
+      <div *ngIf="user.permanent">
       <span>
         {{user.username}}
       </span>

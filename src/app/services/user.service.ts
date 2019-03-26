@@ -60,6 +60,7 @@ export class UserService {
         const response = plainToClassFromExist(new ApiResponse<User>(User), apiResponse);
         console.log(response);
         if (response.success) {
+          this.eventService.emitUser(response.data);
           console.log(response);
         } else {
           console.error(response.message);
@@ -79,15 +80,22 @@ export class UserService {
       tap((apiResponse: ApiResponse<User>) => {
         const response = plainToClassFromExist(new ApiResponse<User>(User), apiResponse);
         if (response.success) {
+          this.eventService.emitUser(response.data);
         } else {
           console.error(response.message);
         }
       }));
   }
 
-  public logout(): Observable<ApiResponse<null>> {
-    return this.httpClient.post<ApiResponse<null>>(
+  public logout(): Observable<ApiResponse<User>> {
+    return this.httpClient.post<ApiResponse<User>>(
       UserService.logoutUri,
-      null);
+      null, {withCredentials: true}).pipe(
+        tap((response: ApiResponse<User>) => {
+          if (response.success) {
+            this.eventService.emitUser(response.data);
+          }
+        })
+    );
   }
 }

@@ -1,6 +1,9 @@
-<div class="modal-container" *ngIf="token">
+<div class="modal-container">
   <div class="modal-block">
     <ngb-alert [type]="mainAlert.type" [dismissible]="false">
+      <ng-container *ngIf="user.permanent; then permanent; else nonPermanent"></ng-container>
+      <ng-template #permanent>Are you sure to log&nbsp;out?</ng-template>
+      <ng-template #nonPermanent>Are you sure to purge data?</ng-template>
       {{ mainAlert.message }}
     </ngb-alert>
   </div>
@@ -14,5 +17,11 @@
       </button>
       <button class="btn confirm btn-danger" (click)="no()">No</button>
     </div>
+  </div>
+
+  <div *ngIf="alerts.length > 0" class="modal-block">
+    <p *ngFor="let alert of alerts">
+      <ngb-alert [type]="alert.type" [dismissible]="false">{{ alert.message }}</ngb-alert>
+    </p>
   </div>
 </div>
