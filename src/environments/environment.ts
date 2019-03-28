@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiServer: 'http://api.todolist.loc:8000/',
+  // apiServer: 'http://api.todolist.loc:8000/',
+  apiServer: '/',
   defaultCountPerPage: 10,
 };
 
