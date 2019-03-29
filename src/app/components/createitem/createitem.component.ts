@@ -86,6 +86,7 @@ export class CreateitemComponent extends ModalComponent implements OnInit {
   }
 
   public reinit(): void {
+    console.log('reinit');
     this.requiredInit = false;
     this.userService.reinit();
     this.activeModal.close();

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {State} from '../entities/state';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {ApiResponse} from '../entities/apiResponse';
 import {plainToClassFromExist} from 'class-transformer';
 import {environment} from '../../environments/environment';
@@ -14,6 +14,7 @@ import {EventService} from './event.service';
 })
 export class UserService {
   private static readonly createUserUri = environment.apiServer + 'api/v1/user/init';
+  private static readonly reinitUri = environment.apiServer + 'api/v1/user/reinit';
   private static readonly registerUri = environment.apiServer + 'api/v1/user/register';
   private static readonly loginUri = environment.apiServer + 'api/v1/user/login';
   private static readonly logoutUri = environment.apiServer + 'api/v1/user/logout';
@@ -42,9 +43,24 @@ export class UserService {
       });
   }
 
-  // TODO Implement reinit
   public reinit(): void {
-    console.log('Implement reinit');
+    this.eventService.emitState(State.processing);
+    this.httpClient.post(UserService.reinitUri, null, {withCredentials: true})
+      .subscribe((response: ApiResponse<User>) => {
+        response = plainToClassFromExist(new ApiResponse<User>(User), response);
+        if (response.success) {
+          this.eventService.emitUser(response.data);
+          this.eventService.emitState(State.true);
+        } else {
+          this.eventService.emitState(State.error);
+          this.eventService.emitUser(null);
+        }
+        console.error(response);
+      }, (error: HttpErrorResponse) => {
+        this.eventService.emitState(State.error);
+        this.eventService.emitUser(null);
+        console.error(error);
+      });
   }
 
   public register(username: string, password: string): Observable<ApiResponse<User>> {
@@ -91,11 +107,11 @@ export class UserService {
     return this.httpClient.post<ApiResponse<User>>(
       UserService.logoutUri,
       null, {withCredentials: true}).pipe(
-        tap((response: ApiResponse<User>) => {
-          if (response.success) {
-            this.eventService.emitUser(response.data);
-          }
-        })
+      tap((response: ApiResponse<User>) => {
+        if (response.success) {
+          this.eventService.emitUser(response.data);
+        }
+      })
     );
   }
 }
