@@ -81,8 +81,9 @@ export class TodolistComponent implements OnInit, OnDestroy {
         const response = plainToClassFromExist(new ApiResponse<ItemsData>(ItemsData), apiResponse);
         if (response.success) {
           this.state = TodolistState.success;
-          this.count = response.data.count;
+          this.count = response.data.totalCount;
           this.items = response.data.items;
+          console.log(response);
         } else {
           this.state = TodolistState.serverError;
         }
